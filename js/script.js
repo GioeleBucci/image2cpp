@@ -1,6 +1,7 @@
 /* eslint-disable radix */
 /* eslint-disable max-len */
 /* eslint-disable no-plusplus */
+const FLOYD_STEINBERG_MODE = 2;
 // A bunch of settings used when converting
 const settings = {
   screenWidth: 128,
@@ -476,10 +477,10 @@ function updateInteger(fieldName) {
 function updateDitheringMode() {
   const mode = parseInt(document.getElementById('ditheringMode').value);
   settings.ditheringMode = mode;
-  if (mode !== 2) {
+  if (mode !== FLOYD_STEINBERG_MODE) {
     settings.lastNonFloydDitheringMode = mode;
   }
-  document.getElementById('floydSteinbergDithering').checked = mode === 2;
+  document.getElementById('floydSteinbergDithering').checked = mode === FLOYD_STEINBERG_MODE;
   updateAllImages();
 }
 
@@ -489,10 +490,10 @@ function updateFloydSteinbergDithering() {
   const modeSelect = document.getElementById('ditheringMode');
 
   if (checkbox.checked) {
-    if (settings.ditheringMode !== 2) {
+    if (settings.ditheringMode !== FLOYD_STEINBERG_MODE) {
       settings.lastNonFloydDitheringMode = settings.ditheringMode;
     }
-    settings.ditheringMode = 2;
+    settings.ditheringMode = FLOYD_STEINBERG_MODE;
   } else {
     settings.ditheringMode = settings.lastNonFloydDitheringMode;
   }
