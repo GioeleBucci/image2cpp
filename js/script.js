@@ -18,12 +18,11 @@ const settings = {
   removeZeroesCommas: false,
   ditheringThreshold: 128,
   ditheringMode: 0,
-  lastNonFloydDitheringMode: undefined,
+  lastNonFloydDitheringMode: 0,
   outputFormat: 'plain',
   invertColors: false,
   rotation: 0,
 };
-settings.lastNonFloydDitheringMode = settings.ditheringMode;
 
 function bitswap(b) {
   if (settings.bitswap) {
@@ -491,10 +490,14 @@ function updateFloydSteinbergDithering() {
   const modeSelect = document.getElementById('ditheringMode');
 
   if (checkbox.checked) {
-    settings.lastNonFloydDitheringMode = settings.ditheringMode;
+    if (settings.ditheringMode !== FLOYD_STEINBERG_MODE) {
+      settings.lastNonFloydDitheringMode = settings.ditheringMode;
+    }
     settings.ditheringMode = FLOYD_STEINBERG_MODE;
   } else {
-    settings.ditheringMode = settings.lastNonFloydDitheringMode;
+    settings.ditheringMode = settings.lastNonFloydDitheringMode === FLOYD_STEINBERG_MODE
+      ? 0
+      : settings.lastNonFloydDitheringMode;
   }
 
   modeSelect.value = settings.ditheringMode.toString();
