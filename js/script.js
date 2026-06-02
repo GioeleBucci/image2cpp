@@ -1,6 +1,7 @@
 /* eslint-disable radix */
 /* eslint-disable max-len */
 /* eslint-disable no-plusplus */
+const FLOYD_STEINBERG_MODE = 2;
 // A bunch of settings used when converting
 const settings = {
   screenWidth: 128,
@@ -17,6 +18,7 @@ const settings = {
   removeZeroesCommas: false,
   ditheringThreshold: 128,
   ditheringMode: 0,
+  lastNonFloydDitheringMode: 0,
   outputFormat: 'plain',
   invertColors: false,
   rotation: 0,
@@ -468,6 +470,37 @@ function updateAllImages() {
 // Easy way to update settings controlled by a textfield
 function updateInteger(fieldName) {
   settings[fieldName] = parseInt(document.getElementById(fieldName).value);
+  updateAllImages();
+}
+
+// eslint-disable-next-line no-unused-vars
+function updateDitheringMode() {
+  const mode = parseInt(document.getElementById('ditheringMode').value);
+  settings.ditheringMode = mode;
+  if (mode !== FLOYD_STEINBERG_MODE) {
+    settings.lastNonFloydDitheringMode = mode;
+  }
+  document.getElementById('floydSteinbergDithering').checked = mode === FLOYD_STEINBERG_MODE;
+  updateAllImages();
+}
+
+// eslint-disable-next-line no-unused-vars
+function updateFloydSteinbergDithering() {
+  const checkbox = document.getElementById('floydSteinbergDithering');
+  const modeSelect = document.getElementById('ditheringMode');
+
+  if (checkbox.checked) {
+    if (settings.ditheringMode !== FLOYD_STEINBERG_MODE) {
+      settings.lastNonFloydDitheringMode = settings.ditheringMode;
+    }
+    settings.ditheringMode = FLOYD_STEINBERG_MODE;
+  } else {
+    settings.ditheringMode = settings.lastNonFloydDitheringMode === FLOYD_STEINBERG_MODE
+      ? 0
+      : settings.lastNonFloydDitheringMode;
+  }
+
+  modeSelect.value = settings.ditheringMode.toString();
   updateAllImages();
 }
 
