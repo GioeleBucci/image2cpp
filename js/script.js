@@ -23,6 +23,7 @@ const settings = {
   invertColors: false,
   rotation: 0,
 };
+settings.lastNonFloydDitheringMode = settings.ditheringMode;
 
 function bitswap(b) {
   if (settings.bitswap) {
