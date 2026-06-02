@@ -18,7 +18,7 @@ const settings = {
   removeZeroesCommas: false,
   ditheringThreshold: 128,
   ditheringMode: 0,
-  lastNonFloydDitheringMode: 0,
+  lastNonFloydDitheringMode: undefined,
   outputFormat: 'plain',
   invertColors: false,
   rotation: 0,
@@ -491,9 +491,7 @@ function updateFloydSteinbergDithering() {
   const modeSelect = document.getElementById('ditheringMode');
 
   if (checkbox.checked) {
-    if (settings.ditheringMode !== FLOYD_STEINBERG_MODE) {
-      settings.lastNonFloydDitheringMode = settings.ditheringMode;
-    }
+    settings.lastNonFloydDitheringMode = settings.ditheringMode;
     settings.ditheringMode = FLOYD_STEINBERG_MODE;
   } else {
     settings.ditheringMode = settings.lastNonFloydDitheringMode;
